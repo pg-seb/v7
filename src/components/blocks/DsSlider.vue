@@ -129,59 +129,84 @@ const countdownUnits = computed(() => {
 .slider__right {
   flex-shrink: 0;
   display: flex;
-  align-items: flex-end;
+  align-items: center;              /* centré verticalement dans le slider */
   justify-content: flex-end;
-  height: 100%;
-  padding-bottom: 10px;
 }
 
+/*
+  Figma boxCountdown container :
+  - layout HORIZONTAL, gap 5px
+  - pas de shadow sur le container — shadow sur chaque box via ::before
+*/
 .slider__countdown {
   display: flex;
   align-items: center;
-  gap: var(--gap-xs);                    /* 5px */
-  box-shadow: var(--shadow-countdown);
+  gap: var(--gap-xs);               /* 5px — Figma exact */
 }
 
-/* Figma : border-radius 10px, px 5px, py 10px, min-w 50px */
+/*
+  Figma boxCountdown :
+  - w 50px, h 49px (Figma exact)
+  - pt 10px, pb 10px, pl 5px, pr 5px
+  - border-radius 10px (--radius-l)
+  - fill : blanc 80% lighten = couleur de fond claire sur brandTheme
+  - effect DROP_SHADOW : offset(0,0), radius 30px, spread 0, rgba(0,0,0,0.38)
+
+  Technique shadow :
+  - ::before porte le background (fond clair)
+  - ::after porte la box-shadow avec z-index:-1
+    → l'ombre passe DERRIÈRE la box adjacente qui la masque naturellement
+    → pas d'effet "boueux" dans les gaps
+*/
 .slider__countdown-box {
   position: relative;
+  z-index: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--gap-xs);
-  min-width: 50px;
-  padding: 10px var(--gap-xs);
-  border-radius: var(--radius-l);
-  overflow: hidden;
+  gap: 2px;                         /* espace serré entre valeur et label */
+  width: 50px;
+  height: 49px;                     /* Figma exact : 49px */
+  padding: 10px var(--gap-xs);      /* 10px 5px */
+  border-radius: var(--radius-l);   /* 10px */
+  /* fond : blanc 80% en lighten sur brandTheme → bleu très clair */
+  background: rgba(255, 255, 255, 0.82);
 }
+
+/* Shadow derrière chaque box — z-index:-1 pour passer sous la box voisine */
 .slider__countdown-box::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--primitive-white-80);
-  mix-blend-mode: lighten;
   border-radius: inherit;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.38); /* --shadow-countdown Figma exact */
+  z-index: -1;
   pointer-events: none;
 }
 
+/*
+  Valeur : Figma — Regular 24px, lh normal (pas 46px !)
+  La line-height 46px était la hauteur du SLOT, pas du texte lui-même.
+*/
 .slider__countdown-value {
   font-family: var(--font-family-title);
   font-weight: 400;
-  font-size: var(--font-size-3xl);       /* 24px */
-  line-height: var(--font-line-height-5xl); /* 46px */
+  font-size: var(--font-size-3xl);  /* 24px */
+  line-height: 1;                   /* compact — la box a une hauteur fixe */
   color: var(--text-base-primary);
-  position: relative; z-index: 1;
   white-space: nowrap;
 }
 
+/*
+  Label : Figma — Medium 10px, lh normal
+*/
 .slider__countdown-label {
   font-family: var(--font-family-body);
   font-weight: 500;
-  font-size: var(--font-size-xs);        /* 10px */
-  line-height: var(--font-line-height-xs); /* 16px */
+  font-size: var(--font-size-xs);   /* 10px */
+  line-height: 1;
   color: var(--text-base-primary);
-  position: relative; z-index: 1;
   white-space: nowrap;
 }
 
