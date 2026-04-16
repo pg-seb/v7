@@ -1,0 +1,85 @@
+/* ============================================================
+   DS V7 — Base + Grid
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-lg);       /* 15px */
+  line-height: var(--font-line-height-md); /* 20px */
+  color: var(--text-base-primary);
+  background-color: var(--surface-base-surfacePage); /* rgba(247,247,247,1) */
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+ul, ol { list-style: none; }
+
+/* ── SHIMMER ──────────────────────────────────────────────── */
+.img-placeholder {
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.04) 0%,
+    rgba(0,0,0,0.08) 50%,
+    rgba(0,0,0,0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GRID SYSTEM
+   ══════════════════════════════════════════════════════════════
+   .container          → contenu boxé (marges responsives)
+   .container--fluid   → pleine largeur, sans marge
+   ══════════════════════════════════════════════════════════════ */
+
+/* Contenu boxé — s'adapte à chaque breakpoint */
+.container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--grid-margin-mobile);   /* 10px — mobile défaut */
+}
+
+@media (min-width: 768px) {
+  .container { padding-inline: var(--grid-margin-tablet); }   /* 20px */
+}
+
+@media (min-width: 1080px) {
+  .container { padding-inline: var(--grid-margin-desktop-sm); } /* 50px */
+}
+
+@media (min-width: 1620px) {
+  .container {
+    max-width: var(--grid-max-width);   /* 1300px */
+    padding-inline: 0;
+  }
+}
+
+/* Pleine largeur — slider, topbar, footer bg, block bg */
+.container--fluid {
+  width: 100%;
+  padding-inline: 0;
+}
+
+/* ── BREAKPOINTS — référence canonique ───────────────────── */
+/*
+  Mobile only :    @media (max-width: 767px)
+  Tablet only :    @media (min-width: 768px) and (max-width: 1079px)
+  Tablet + :       @media (min-width: 768px)
+  Desktop + :      @media (min-width: 1080px)
+  Desktop lg + :   @media (min-width: 1620px)
+  Pas desktop :    @media (max-width: 1079px)
+*/

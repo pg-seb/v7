@@ -1,0 +1,226 @@
+/* ============================================================
+   DS V7 — Design Tokens
+   Source : Figma 7ytTnJjPKDVX4YnaSn7uJR
+   ============================================================
+   Règle : UN SEUL token brand → --brandTheme
+   États dérivés = brandTheme + overlay blanc via ::after
+   Jamais de couleur hex en dur dans les composants.
+   ============================================================ */
+
+/* ── PRIMITIVES ───────────────────────────────────────────── */
+:root {
+  /* Noirs transparents */
+  --primitive-black-87: rgba(0, 0, 0, 0.87);
+  --primitive-black-80: rgba(0, 0, 0, 0.8);
+  --primitive-black-60: rgba(0, 0, 0, 0.6);
+  --primitive-black-38: rgba(0, 0, 0, 0.38);
+  --primitive-black-12: rgba(0, 0, 0, 0.12);
+  --primitive-black-2:  rgba(0, 0, 0, 0.02);
+
+  /* Blancs transparents */
+  --primitive-white-100: rgba(255, 255, 255, 1);
+  --primitive-white-92:  rgba(255, 255, 255, 0.92);
+  --primitive-white-80:  rgba(255, 255, 255, 0.8);
+  --primitive-white-62:  rgba(255, 255, 255, 0.62);
+  --primitive-white-60:  rgba(255, 255, 255, 0.6);
+  --primitive-white-40:  rgba(255, 255, 255, 0.4);
+  --primitive-white-38:  rgba(255, 255, 255, 0.38);
+  --primitive-white-20:  rgba(255, 255, 255, 0.2);
+  --primitive-white-12:  rgba(255, 255, 255, 0.12);
+  --primitive-white-0:   rgba(255, 255, 255, 0);
+}
+
+/* ── SÉMANTIQUE — LIGHT ───────────────────────────────────── */
+:root,
+[data-theme="light"] {
+  /* Brand unique */
+  --brandTheme: rgba(0, 185, 255, 1);
+
+  /* Textes */
+  --text-base-primary:    var(--primitive-black-87);   /* rgba(0,0,0,0.87) */
+  --text-base-secondary:  var(--primitive-black-60);   /* rgba(0,0,0,0.6)  */
+  --text-base-disabled:   var(--primitive-black-38);
+  --text-buttons-primary: rgba(255, 255, 255, 1);
+
+  /* Surfaces */
+  --surface-base-surfacePrimary:   rgba(255, 255, 255, 1);   /* white */
+  --surface-base-surfaceSecondary: var(--primitive-white-12);
+  --surface-base-surfacePage:      rgba(247, 247, 247, 1);   /* fond page light */
+
+  /* Traits */
+  --stroke:        var(--primitive-black-12);
+  --stroke-strong: var(--primitive-black-38);
+
+  /* Navigation / layout */
+  --color-bg-page:   rgba(255, 255, 255, 1);
+  --color-bg-nav:    rgba(255, 255, 255, 1);
+  --color-bg-topbar: var(--primitive-black-87);
+
+  /* Statuts */
+  --style-danger:  rgba(255, 0, 0, 1);
+  --style-success: rgba(0, 126, 51, 1);
+  --style-warning: rgba(161, 101, 11, 1);
+  --style-info:    rgba(0, 101, 143, 1);
+}
+
+/* ── SÉMANTIQUE — DARK ────────────────────────────────────── */
+/*
+  Valeurs mesurées sur les frames Figma dark :
+    2863:11957 "Custom blocks Product - dark"
+    2863:11969 "Custom blocks Product Mobile - dark"
+
+  surface/base/surfacePage → rgba(0,0,0,1) = black en dark Figma
+  surface/base/surfacePrimary → var(--primitive-black-87) = rgba(0,0,0,0.87)
+  text/base/primary → rgba(255,255,255,1)
+  stroke → rgba(255,255,255,0.38)
+
+  Le topbar reste identique (rgba(0,0,0,0.87)) car il est déjà sombre.
+  Le header passe aussi à surfacePrimary dark = rgba(0,0,0,0.87)
+  → visuellement : header dark = fond très sombre avec le logo blanc
+*/
+[data-theme="dark"] {
+  --brandTheme: rgba(0, 185, 255, 1);   /* brand identique en dark */
+
+  /* Textes inversés */
+  --text-base-primary:    rgba(255, 255, 255, 1);        /* blanc */
+  --text-base-secondary:  rgba(255, 255, 255, 0.6);
+  --text-base-disabled:   rgba(255, 255, 255, 0.38);
+  --text-buttons-primary: rgba(255, 255, 255, 1);        /* texte sur btn brand */
+
+  /* Surfaces sombres */
+  --surface-base-surfacePrimary:   var(--primitive-black-87);  /* rgba(0,0,0,0.87) */
+  --surface-base-surfaceSecondary: var(--primitive-black-60);
+  --surface-base-surfacePage:      rgba(20, 20, 20, 1);        /* fond page dark */
+
+  /* Traits clairs */
+  --stroke:        rgba(255, 255, 255, 0.38);
+  --stroke-strong: rgba(255, 255, 255, 0.6);
+
+  /* Layouts */
+  --color-bg-page:   rgba(20, 20, 20, 1);
+  --color-bg-nav:    rgba(20, 20, 20, 1);
+  --color-bg-topbar: rgba(10, 10, 10, 1);    /* légèrement plus sombre que surfacePrimary */
+
+  /* Statuts — inchangés en dark */
+  --style-danger:  rgba(255, 0, 0, 1);
+  --style-success: rgba(0, 126, 51, 1);
+  --style-warning: rgba(161, 101, 11, 1);
+  --style-info:    rgba(0, 101, 143, 1);
+}
+
+/* ── OVERLAYS ÉTATS BRAND ─────────────────────────────────── */
+/*
+  Tous les états dérivés de brandTheme sont des overlays blancs.
+  Fonctionnent identiquement en light ET dark
+  (l'overlay blanc éclaircit le brandTheme dans les deux modes).
+*/
+:root {
+  --overlay-brand-hover:       rgba(255, 255, 255, 0.20);  /* hover    = brand/60 */
+  --overlay-brand-disabled-lt: rgba(255, 255, 255, 0.62);  /* brand/38 = toggle  */
+  --overlay-brand-disabled-md: rgba(255, 255, 255, 0.88);  /* brand/12 = checkbox */
+  --overlay-brand-disabled-hv: rgba(255, 255, 255, 0.92);  /* button primary disabled */
+}
+
+/* ── MULTI-BRAND ──────────────────────────────────────────── */
+[data-brand="pg-template"] {
+  --brandTheme:        rgba(0, 185, 255, 1);
+  --font-family-title: 'Roboto', sans-serif;
+  --font-family-body:  'Roboto', sans-serif;
+}
+[data-brand="formula1"] {
+  --brandTheme:        rgba(207, 46, 30, 1);
+  --font-family-title: 'Titillium Web', sans-serif;
+  --font-family-body:  'Titillium Web', sans-serif;
+}
+[data-brand="goo"] {
+  --brandTheme:        rgba(226, 6, 19, 1);
+  --font-family-title: 'Montserrat', sans-serif;
+  --font-family-body:  'Roboto', sans-serif;
+}
+[data-brand="gpxp"] {
+  --brandTheme:        rgba(184, 155, 86, 1);
+  --font-family-title: 'Sora', sans-serif;
+  --font-family-body:  'Inter', sans-serif;
+}
+
+/* ── TYPOGRAPHIE ──────────────────────────────────────────── */
+:root {
+  --font-family-title: 'Roboto', sans-serif;
+  --font-family-body:  'Roboto', sans-serif;
+
+  --font-size-xs:  10px;   --font-line-height-xs:  16px;
+  --font-size-sm:  12px;   --font-line-height-sm:  18px;
+  --font-size-md:  14px;   --font-line-height-md:  20px;
+  --font-size-lg:  15px;   --font-line-height-lg:  22px;
+  --font-size-xl:  18px;   --font-line-height-xl:  24px;
+  --font-size-2xl: 20px;   --font-line-height-2xl: 28px;
+  --font-size-3xl: 24px;   --font-line-height-3xl: 32px;
+  --font-size-4xl: 30px;   --font-line-height-4xl: 40px;
+  --font-size-5xl: 35px;   --font-line-height-5xl: 46px;
+  --font-size-6xl: 45px;   --font-line-height-6xl: 58px;
+}
+
+/* ── ESPACEMENT ───────────────────────────────────────────── */
+:root {
+  --gap-none: 0px;
+  --gap-xxs:  4px;
+  --gap-xs:   5px;
+  --gap-sm:   10px;
+  --gap-md:   20px;
+  --gap-lg:   40px;
+  --gap-xl:   50px;
+  --gap-xxl:  100px;
+}
+
+/* ── RAYONS ───────────────────────────────────────────────── */
+:root {
+  --radius-none: 0px;
+  --radius-xs:   2px;
+  --radius-s:    4px;
+  --radius-m:    5px;
+  --radius-l:    10px;
+  --radius-xl:   20px;
+  --radius-max:  100px;
+}
+
+/* ── FORME BOUTON ─────────────────────────────────────────── */
+:root                        { --shape-shape: var(--radius-s); }
+[data-button-shape="pills"]  { --shape-shape: var(--radius-max); }
+[data-button-shape="sharp"]  { --shape-shape: var(--radius-none); }
+
+/* ── LAYOUT FIGMA ─────────────────────────────────────────── */
+:root {
+  --layout-page-width:      1920px;
+  --layout-content-width:   1300px;
+  --layout-side-padding:    310px;
+  --layout-header-padding:  50px;
+
+  --topbar-height:          39px;
+  --header-height:          88px;
+  --slider-height-minimal:  139px;
+  --slider-height-image:    350px;
+  --slider-height-topview:  150px;
+  --slider-height-mobile:   172px;
+}
+
+/* ── GRILLE ───────────────────────────────────────────────── */
+:root {
+  --grid-margin-mobile:      10px;
+  --grid-margin-tablet:      20px;
+  --grid-margin-desktop-sm:  50px;
+  --grid-max-width:          1300px;
+}
+
+/* ── OMBRES ───────────────────────────────────────────────── */
+:root {
+  --shadow-sm:        0px 1px 6px 0px rgba(0, 0, 0, 0.12);
+  --shadow-header:    0px 4px 4px 0px rgba(0, 0, 0, 0.04);
+  --shadow-countdown: 0px 0px 30px 0px rgba(0, 0, 0, 0.38);
+}
+
+/* ── TRANSITIONS ──────────────────────────────────────────── */
+:root {
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
